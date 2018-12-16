@@ -6,7 +6,19 @@ COPY . /app
 RUN go test ./...
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o webserver .
 
-FROM dm848/consul-service
+FROM dm848/cs-jolie:v1
+
+WORKDIR /server
+
+# test jolie interface
+COPY . /server
+COPY --from=builder /app/webserver .
+RUN chmod +x test-jolie-interface.sh
+RUN chmod +x webserver
+RUN ./test-jolie-interface.sh
+
+
+FROM dm848/consul-service:v1
 
 WORKDIR /server
 COPY --from=builder /app/webserver .
