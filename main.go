@@ -80,22 +80,21 @@ func main() {
 			return
 		}
 
-		entry := &ConsulEntry{}
-		entries := []*ConsulEntry{entry}
-		err = json.Unmarshal(data, entries)
+		var entries []*ConsulEntry
+		err = json.Unmarshal(data, &entries)
 		if err != nil {
 			w.WriteHeader(500)
 			jr.Err = "Error unmarshaling JSON"
 			return
 		}
 
-		if entry.Val == "" {
+		if len(entries) == 0 || entries[0].Val == "" {
 			w.WriteHeader(404)
 			jr.Err = "value in entry was empty. key = " + key
 			return
 		}
 
-		jr.Val = entry.Val
+		jr.Val = entries[0].Val
 	})
 
 	log.Fatal(http.ListenAndServe(":" + port, router))
