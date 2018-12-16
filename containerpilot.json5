@@ -1,5 +1,5 @@
 {
-  consul: "consul-server:8500",
+  consul: "consul-node:8500",
   jobs: [
     {
       name: "consul-kv-jolie",

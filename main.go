@@ -81,7 +81,8 @@ func main() {
 		}
 
 		entry := &ConsulEntry{}
-		err = json.Unmarshal(data, entry)
+		entries := []*ConsulEntry{entry}
+		err = json.Unmarshal(data, entries)
 		if err != nil {
 			w.WriteHeader(500)
 			jr.Err = "Error unmarshaling JSON"
